@@ -1,30 +1,22 @@
 name: CI Pipeline
-
 on: [push]
-
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8"]  # Match your Conda environment version
-
+        python-version: ["3.8"]  # Match your Conda env
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           pip install pytest flake8
-
       - name: Run Flake8
-        run: |
-          flake8 . --count --show-source --statistics
-
+        run: flake8 . --count --show-source --statistics
       - name: Run pytest
-        run: |
-          python -m pytest ml/test_ml.py -v
+        run: python -m pytest ml/test_ml.py -v
